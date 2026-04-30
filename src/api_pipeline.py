@@ -18,7 +18,7 @@ print(app.url_map)
 pipeline = FacePipeline(
     embeddings_dir="D:/face_recognition_pipeline/data/embeddings",
     model_dir=r"D:\face_recognition_pipeline\models\anti_spoofing\Silent-Face-Anti-Spoofing-master\resources\anti_spoof_models",
-    threshold=0.5,
+    threshold=0.6,
     spoof_threshold=0.7
 )
 

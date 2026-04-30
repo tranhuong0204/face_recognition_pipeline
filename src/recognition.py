@@ -50,4 +50,4 @@ def recognize_face(img_path, threshold=0.5):
 # test_img = r"C:\Users\huong\Downloads\h6.jpg"
 test_img = r"D:\zip\thach\c01ee066-f4e6-44ce-9dc4-323d00ad062c.jpg"
 
-recognize_face(test_img, threshold=0.5)
+recognize_face(test_img, threshold=0.7)

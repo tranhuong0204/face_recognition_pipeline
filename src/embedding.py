@@ -13,7 +13,9 @@ app.prepare(ctx_id=0, det_size=(320,320))
 
 # input_dir = "data/spoof_checked"
 # output_dir = "data/embeddings"
-input_dir = r"D:\face_recognition_pipeline\data\spoof_checked"
+# input_dir = r"D:\face_recognition_pipeline\data\spoof_checked"
+# input_dir = r"D:\face_recognition_pipeline\data\processed"
+input_dir = r"D:\face_recognition_pipeline\data\raw"
 output_dir = r"D:\face_recognition_pipeline\data\embeddings"
 
 os.makedirs(output_dir, exist_ok=True)

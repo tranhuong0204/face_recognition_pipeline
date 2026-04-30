@@ -20,8 +20,5 @@
 
     → Model sẽ được tải về cache (~/.insightface/models/) và dùng ngay.
 
-3. Tải từ repo gốc: Silent-Face-Anti-Spoofing (github.com in Bing)
-
-    Đặt file model vào thư mục:
-    
-    models/anti_spoofing/
+3. Silent-Face-Anti-Spoofing tải từ repo gốc: https://github.com/minivision-ai/Silent-Face-Anti-Spoofing
+    Đặt file model vào thư mục: models/anti_spoofing/
