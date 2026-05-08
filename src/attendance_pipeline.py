@@ -47,14 +47,31 @@ class FacePipeline:
             # print(self.app.models.keys())
 
 
-    def preprocess(self, img_path):
-        # đọc ảnh và resize cơ bản
-        img = Image.open(img_path).convert("RGB")
-        return img
+    # def preprocess(self, img_path):
+    #     # đọc ảnh và resize cơ bản
+    #     img = Image.open(img_path).convert("RGB")
+    #     return img
 
+    def preprocess(self, img):
+    # """Nhận trực tiếp ảnh (PIL.Image hoặc numpy.ndarray)."""
+        if isinstance(img, Image.Image):
+            return img.convert("RGB")
+        elif isinstance(img, np.ndarray):
+            # Nếu là numpy array (BGR từ OpenCV), chuyển sang PIL
+            return Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+        else:
+            raise ValueError("Input phải là PIL.Image hoặc numpy.ndarray")
 
-    def anti_spoof(self, img_path):
-        image = cv2.imread(img_path)
+    # def anti_spoof(self, img_path):
+    #     image = cv2.imread(img_path)
+    def anti_spoof(self, img):
+        if isinstance(img, Image.Image):
+            image = np.array(img)[:, :, ::-1]  # PIL RGB → numpy BGR
+        elif isinstance(img, np.ndarray):
+            image = img
+        else:
+            raise ValueError("Input phải là PIL.Image hoặc numpy.ndarray")
+
         image_bbox = self.spoof_predictor.get_bbox(image)
         image_cropper = CropImage()
         prediction = np.zeros((1, 3))
@@ -93,12 +110,16 @@ class FacePipeline:
             return None
         return faces[0].embedding.reshape(1, -1)
 
-    def recognize(self, img_path):
-        img = self.preprocess(img_path)
+    def recognize(self, img):
+        # img = self.preprocess(img_path)
+        img = self.preprocess(img)
+
 
         # bước anti-spoofing
-        if not self.anti_spoof(img_path):
-            return None, 0.0, "Spoof detected"
+        # if not self.anti_spoof(img_path):
+        if not self.anti_spoof(img):
+
+            return None, 0.0, "Fake face. Spoof detected"
 
         # bước embedding
         emb = self.get_embedding(img)
@@ -113,7 +134,7 @@ pipeline = FacePipeline(
     spoof_threshold=0.7
 )
 
-test_img = r"C:\Users\huong\Downloads\4026162996690501950.jpg"
+# test_img = r"C:\Users\huong\Downloads\4026162996690501950.jpg"
 # person, score, status = pipeline.recognize(test_img)
 
 # print(f"Kết quả: {status}, Người: {person}, Similarity={score:.3f}")

@@ -21,19 +21,8 @@ import sys
 sys.path.append(r"D:\face_recognition_pipeline\models\anti_spoofing\Silent-Face-Anti-Spoofing-master")
 from src.anti_spoof_predict import AntiSpoofPredict
 
-# import os
-# # set biến môi trường ngay từ đầu
-# os.environ["INSIGHTFACE_HOME"] = r"D:\face_recognition_pipeline\models"
-
-# import os
-# print("INSIGHTFACE_HOME =", os.environ.get("INSIGHTFACE_HOME"))
-
 
 from insightface.app import FaceAnalysis
-
-# from insightface.model_zoo import model_store
-# print(model_store.get_model_file("buffalo_m"))
-
 
 class FacePipeline:
     def __init__(self, embeddings_dir, model_dir, threshold=0.5, spoof_threshold=0.7):
@@ -80,27 +69,6 @@ class FacePipeline:
         img = Image.open(img_path).convert("RGB")
         return img
 
-    # def anti_spoof(self, img):
-    #     # chạy anti-spoofing
-    #     score = self.spoof_predictor.predict(img, self.spoof_model_path)
-    #     return score < self.threshold  # True nếu là ảnh thật
-
-
-    # def anti_spoof(self, img):
-    #     # lấy kích thước từ tên model
-    #     model_name = os.path.basename(self.spoof_model_path)
-    #     h_input, w_input, _, _ = parse_model_name(model_name)
-
-    #     # resize ảnh PIL về đúng kích thước
-    #     img_resized = img.resize((w_input, h_input))
-    #     result = self.spoof_predictor.predict(img_resized, self.spoof_model_path)
-
-    #     score_spoof = float(result[0][1])  # xác suất spoof
-    #     score_real  = float(result[0][0])  # xác suất real
-
-    #     return score_spoof < 0.7  # hoặc dùng spoof_threshold riêng
-
-    #cái trên đang chỉ dùng 1 model để duyệt nên chưa chính xác
 
     # def anti_spoof(self, img_path):
     #     img = Image.open(img_path).convert("RGB")

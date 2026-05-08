@@ -41,8 +41,12 @@ for person in os.listdir(input_dir):
     os.makedirs(output_person_dir, exist_ok=True)
 
     for img_name in os.listdir(person_dir):
-        img_path = os.path.join(person_dir, img_name)
-        img = Image.open(img_path).convert("RGB")
+        # img_path = os.path.join(person_dir, img_name)
+        # img = Image.open(img_path).convert("RGB")
+        img_pil = Image.open(img_path).convert("RGB")
+        img_resized = img_pil.resize((80, 80))
+        img_np = np.array(img_resized)[:, :, ::-1]  # RGB → BGR
+
         tensor = transform(img).unsqueeze(0).to(device)
 
         # with torch.no_grad():
@@ -54,7 +58,9 @@ for person in os.listdir(input_dir):
         model_path = r"D:\face_recognition_pipeline\models\anti_spoofing\Silent-Face-Anti-Spoofing-master\resources\anti_spoof_models\4_0_0_80x80_MiniFASNetV1SE.pth"
         img = Image.open(img_path).convert("RGB")
         img = img.resize((80, 80))   # resize về đúng kích thước mà model yêu cầu   # mở file ảnh thành đối tượng PIL.Image
-        result = predictor.predict(img, model_path)
+        # result = predictor.predict(img, model_path)
+        result = predictor.predict(img_np, model_path)
+
 
         score_spoof = float(result[0][1])  # lấy xác suất spoof
         score_real  = float(result[0][0])  # lấy xác suất real
