@@ -6,6 +6,9 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from PIL import Image
 
+from pathlib import Path
+from dotenv import load_dotenv
+
 # import pipeline từ project cũ
 from attendance_pipeline import FacePipeline
 
@@ -15,10 +18,22 @@ CORS(app)
 print(app.url_map)
 
 # Khởi tạo pipeline
+# attendance_pipeline = FacePipeline(
+#     embeddings_dir="D:/face_recognition_pipeline/data/embeddings",
+#     model_dir=r"D:\face_recognition_pipeline\models\anti_spoofing\Silent-Face-Anti-Spoofing-master\resources\anti_spoof_models",
+#     spoof_threshold=0.7
+# )
+
+# Load biến môi trường từ file .env
+load_dotenv()
+
+BASE_DIR = Path(__file__).resolve().parent.parent  # lên 1 cấp từ src/
+load_dotenv(BASE_DIR / ".env")  # load đúng file .env
+
 attendance_pipeline = FacePipeline(
-    embeddings_dir="D:/face_recognition_pipeline/data/embeddings",
-    model_dir=r"D:\face_recognition_pipeline\models\anti_spoofing\Silent-Face-Anti-Spoofing-master\resources\anti_spoof_models",
-    spoof_threshold=0.7
+    embeddings_dir=BASE_DIR / os.getenv("EMBEDDINGS_DIR"),
+    model_dir=BASE_DIR / os.getenv("MODEL_DIR"),
+    spoof_threshold=float(os.getenv("SPOOF_THRESHOLD"))
 )
 
 @app.route('/attendance_embedding', methods=['POST'])

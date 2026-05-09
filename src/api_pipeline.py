@@ -22,32 +22,6 @@ pipeline = FacePipeline(
     spoof_threshold=0.7
 )
 
-# @app.route('/verify', methods=['POST'])
-# def recognize():
-#     data = request.json
-#     if not data or "image" not in data:
-#         return jsonify({"isSuccess": False, "message": "Thiếu ảnh"}), 400
-
-#     # decode base64 → numpy
-#     decoded = base64.b64decode(data["image"])
-#     nparr = np.frombuffer(decoded, np.uint8)
-#     frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-
-#     # lưu tạm ảnh để pipeline xử lý
-#     tmp_path = "temp.jpg"
-#     cv2.imwrite(tmp_path, frame)
-
-#     person, score, status = pipeline.recognize(tmp_path)
-
-#     print(f">>> Nhận diện: {person} | Score: {score:.2f} | Status: {status}")
-
-#     return jsonify({
-#         "isSuccess": status == "Recognized",
-#         "person": person,
-#         "score": float(score),
-#         "status": status
-#     })
-
 @app.route('/verify', methods=['POST'])
 def recognize():
     data = request.json

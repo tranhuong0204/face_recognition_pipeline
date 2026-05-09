@@ -12,13 +12,6 @@ face_app.prepare(ctx_id=0, det_size=(320,320))
 
 @app.route("/original_embedding", methods=["POST"])
 def get_embedding():
-    # data = request.get_json()
-    # base64_str = data.get("image")
-
-    # # Giải mã base64 thành ảnh
-    # img_bytes = base64.b64decode(base64_str)
-    # nparr = np.frombuffer(img_bytes, np.uint8)
-    # img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
         # Lấy file ảnh từ multipart/form-data
     file = request.files.get("image")

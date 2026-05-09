@@ -5,6 +5,9 @@ from PIL import Image
 # from insightface.app import FaceAnalysis
 from sklearn.metrics.pairwise import cosine_similarity
 
+from pathlib import Path
+from dotenv import load_dotenv
+
 import sys
 sys.path.append(r"D:\face_recognition_pipeline\models\anti_spoofing\Silent-Face-Anti-Spoofing-master\src")
 
@@ -155,11 +158,22 @@ class FacePipeline:
         else:
             return None, best_score, "Unknown"
 
+# pipeline = FacePipeline(
+#     embeddings_dir="D:/face_recognition_pipeline/data/embeddings",
+#     model_dir=r"D:\face_recognition_pipeline\models\anti_spoofing\Silent-Face-Anti-Spoofing-master\resources\anti_spoof_models",
+#     threshold=0.5,
+#     spoof_threshold=0.7
+# )
+
+# Load biến môi trường từ file .env
+load_dotenv()
+BASE_DIR = Path(__file__).resolve().parent.parent  # lên 1 cấp từ src/
+
 pipeline = FacePipeline(
-    embeddings_dir="D:/face_recognition_pipeline/data/embeddings",
-    model_dir=r"D:\face_recognition_pipeline\models\anti_spoofing\Silent-Face-Anti-Spoofing-master\resources\anti_spoof_models",
-    threshold=0.5,
-    spoof_threshold=0.7
+    embeddings_dir=BASE_DIR / os.getenv("EMBEDDINGS_DIR"),
+    model_dir=BASE_DIR / os.getenv("MODEL_DIR"),
+    threshold=float(os.getenv("THRESHOLD")),
+    spoof_threshold=float(os.getenv("SPOOF_THRESHOLD"))
 )
 
 test_img = r"C:\Users\huong\Downloads\4026162996690501950.jpg"

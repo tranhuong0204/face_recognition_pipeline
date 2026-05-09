@@ -1,31 +1,34 @@
-import os
 import cv2
 import numpy as np
 from PIL import Image
 # from insightface.app import FaceAnalysis
 from sklearn.metrics.pairwise import cosine_similarity
 
-import sys
-sys.path.append(r"D:\face_recognition_pipeline\models\anti_spoofing\Silent-Face-Anti-Spoofing-master\src")
+from pathlib import Path
+from dotenv import load_dotenv
+import os
 
-from generate_patches import CropImage
-
-# ê tại sao phai như này zạ
-import sys
-sys.path.append(r"D:\face_recognition_pipeline\models\anti_spoofing\Silent-Face-Anti-Spoofing-master\src")
-from utility import parse_model_name
-
-
-# import AntiSpoofPredict từ repo Silent-Face-Anti-Spoofing
-import sys
-sys.path.append(r"D:\face_recognition_pipeline\models\anti_spoofing\Silent-Face-Anti-Spoofing-master")
 from src.anti_spoof_predict import AntiSpoofPredict
+from src.generate_patches import CropImage
+from src.utility import parse_model_name
+
+# import sys
+# sys.path.append(r"D:\face_recognition_pipeline\models\anti_spoofing\Silent-Face-Anti-Spoofing-master\src")
+
+# from generate_patches import CropImage
+
+# # ê tại sao phai như này zạ
+# import sys
+# sys.path.append(r"D:\face_recognition_pipeline\models\anti_spoofing\Silent-Face-Anti-Spoofing-master\src")
+# from utility import parse_model_name
+
+
+# # import AntiSpoofPredict từ repo Silent-Face-Anti-Spoofing
+# import sys
+# sys.path.append(r"D:\face_recognition_pipeline\models\anti_spoofing\Silent-Face-Anti-Spoofing-master")
+# from src.anti_spoof_predict import AntiSpoofPredict
 
 from insightface.app import FaceAnalysis
-
-# from insightface.model_zoo import model_store
-# print(model_store.get_model_file("buffalo_m"))
-
 
 class FacePipeline:
     def __init__(self, embeddings_dir, model_dir, spoof_threshold=0.7):
@@ -44,8 +47,6 @@ class FacePipeline:
             # load anti-spoofing
             self.spoof_predictor = AntiSpoofPredict(device_id=0)
             self.model_dir = model_dir   # thư mục chứa nhiều model .pth
-            # print(self.app.models.keys())
-
 
     # def preprocess(self, img_path):
     #     # đọc ảnh và resize cơ bản
@@ -128,10 +129,22 @@ class FacePipeline:
 
         return emb, 1.0, "Success"
 
+# pipeline = FacePipeline(
+#     embeddings_dir="D:/face_recognition_pipeline/data/embeddings",
+#     model_dir=r"D:\face_recognition_pipeline\models\anti_spoofing\Silent-Face-Anti-Spoofing-master\resources\anti_spoof_models",
+#     spoof_threshold=0.7
+# )
+
+# Load biến môi trường từ file .env
+load_dotenv()
+
+BASE_DIR = Path(__file__).resolve().parent.parent  # lên 1 cấp từ src/
+load_dotenv(BASE_DIR / ".env")  # load đúng file .env
+
 pipeline = FacePipeline(
-    embeddings_dir="D:/face_recognition_pipeline/data/embeddings",
-    model_dir=r"D:\face_recognition_pipeline\models\anti_spoofing\Silent-Face-Anti-Spoofing-master\resources\anti_spoof_models",
-    spoof_threshold=0.7
+    embeddings_dir=BASE_DIR / os.getenv("EMBEDDINGS_DIR"),
+    model_dir=BASE_DIR / os.getenv("MODEL_DIR"),
+    spoof_threshold=float(os.getenv("SPOOF_THRESHOLD"))
 )
 
 # test_img = r"C:\Users\huong\Downloads\4026162996690501950.jpg"

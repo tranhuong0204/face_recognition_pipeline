@@ -52,11 +52,6 @@ def recognize_face(img, threshold=0.5):
         print(f"Ảnh {img_path} không khớp ai (similarity={best_score:.3f})")
         return None
 
-# ví dụ chạy
-# test_img = r"C:\Users\huong\Downloads\h6.jpg"
-test_img = r"D:\zip\thach\c01ee066-f4e6-44ce-9dc4-323d00ad062c.jpg"
-
-recognize_face(test_img, threshold=0.7)
 
 # nhận img_path để test
 
